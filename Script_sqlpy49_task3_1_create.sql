@@ -1,35 +1,35 @@
---[SQLPY-49] 3. ДЗ-1 Музыкальный сервис 
---Домашнее задание к лекции «Проектирование БД. Связи. 3НФ»
+--[SQLPY-49] 3. Р”Р—-1 РњСѓР·С‹РєР°Р»СЊРЅС‹Р№ СЃРµСЂРІРёСЃ 
+--Р”РѕРјР°С€РЅРµРµ Р·Р°РґР°РЅРёРµ Рє Р»РµРєС†РёРё В«РџСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ Р‘Р”. РЎРІСЏР·Рё. 3РќР¤В»
 
---СОЗДАДИМ ОТНОШЕНИЯ:
+--РЎРћР—Р”РђР”РРњ РћРўРќРћРЁР•РќРРЇ:
 
---3.1.1. создадим табл муз.жанров music_genres 
+--3.1.1. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р» РјСѓР·.Р¶Р°РЅСЂРѕРІ music_genres 
 create table if not exists sqlpy49_task3_1.music_genres(
 	genre_id serial primary key,
 	genre_name text not null unique
 );
 
---3.1.2 создадим табл певцов music_artists 
+--3.1.2 СЃРѕР·РґР°РґРёРј С‚Р°Р±Р» РїРµРІС†РѕРІ music_artists 
 create table if not exists sqlpy49_task3_1.music_artists(
 	artist_id serial primary key,
 	artist_name text not null unique
 );
 
---3.1.3. создадим табл вышедших муз.альбомов music_albums 
+--3.1.3. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р» РІС‹С€РµРґС€РёС… РјСѓР·.Р°Р»СЊР±РѕРјРѕРІ music_albums 
 create table if not exists sqlpy49_task3_1.music_albums(
 	album_id serial primary key,
 	album_name text not null unique,
 	album_release_year numeric(4)
 );
 
---3.1.4. создадим табл муз.треков в альбоме music_tracks 
+--3.1.4. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р» РјСѓР·.С‚СЂРµРєРѕРІ РІ Р°Р»СЊР±РѕРјРµ music_tracks 
 create table if not exists sqlpy49_task3_1.music_tracks(
 	track_id serial primary key,
 	track_name text not null unique,
 	track_duration numeric(4)
 );
 
---3.1.5. создадим табл вышедших муз.сборников music_collections 
+--3.1.5. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р» РІС‹С€РµРґС€РёС… РјСѓР·.СЃР±РѕСЂРЅРёРєРѕРІ music_collections 
 create table if not exists sqlpy49_task3_1.music_collections(
 	collection_id serial primary key,
 	collection_name text not null unique,
@@ -37,28 +37,28 @@ create table if not exists sqlpy49_task3_1.music_collections(
 );
 
 
--- ПОСТРОИМ СВЯЗИ:
+-- РџРћРЎРўР РћРРњ РЎР’РЇР—Р:
 
---3.1.6. добавим в табл.треков огр-е внеш.ключа для столбца с альбомами
+--3.1.6. РґРѕР±Р°РІРёРј РІ С‚Р°Р±Р».С‚СЂРµРєРѕРІ РѕРіСЂ-Рµ РІРЅРµС€.РєР»СЋС‡Р° РґР»СЏ СЃС‚РѕР»Р±С†Р° СЃ Р°Р»СЊР±РѕРјР°РјРё
 alter table sqlpy49_task3_1.music_tracks 
 	add column album_id integer
 	references sqlpy49_task3_1.music_albums;
 
---3.1.7. создадим табл-связей genre_into_artist для таблиц певцов и жанров 
+--3.1.7. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р»-СЃРІСЏР·РµР№ genre_into_artist РґР»СЏ С‚Р°Р±Р»РёС† РїРµРІС†РѕРІ Рё Р¶Р°РЅСЂРѕРІ 
 create table if not exists sqlpy49_task3_1.genre_into_artist(
 	genre_id integer references sqlpy49_task3_1.music_genres(genre_id) ,
 	artist_id integer references sqlpy49_task3_1.music_artists(artist_id) ,
 	constraint pk_artist_into_genre primary key (genre_id , artist_id)
 );
 
---3.1.8. создадим табл-связей artist_into_album для таблиц альбомов и певцов 
+--3.1.8. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р»-СЃРІСЏР·РµР№ artist_into_album РґР»СЏ С‚Р°Р±Р»РёС† Р°Р»СЊР±РѕРјРѕРІ Рё РїРµРІС†РѕРІ 
 create table if not exists sqlpy49_task3_1.artist_into_album(
 	album_id integer references sqlpy49_task3_1.music_albums(album_id) ,
 	artist_id integer references sqlpy49_task3_1.music_artists(artist_id) ,
 	constraint pk_artist_into_album primary key (album_id , artist_id)
 );
 
---3.1.9. создадим табл-связей track_into_collection для таблиц альбомов и певцов 
+--3.1.9. СЃРѕР·РґР°РґРёРј С‚Р°Р±Р»-СЃРІСЏР·РµР№ track_into_collection РґР»СЏ С‚Р°Р±Р»РёС† Р°Р»СЊР±РѕРјРѕРІ Рё РїРµРІС†РѕРІ 
 create table if not exists sqlpy49_task3_1.track_into_collection(
 	collection_id integer references sqlpy49_task3_1.music_collections(collection_id) ,
 	track_id integer references sqlpy49_task3_1.music_tracks (track_id) ,
