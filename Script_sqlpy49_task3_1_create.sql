@@ -18,21 +18,21 @@ create table if not exists sqlpy49_task3_1.music_artists(
 --3.1.3. создадим табл вышедших муз.альбомов music_albums 
 create table if not exists sqlpy49_task3_1.music_albums(
 	album_id serial primary key,
-	album_name text not null unique,
+	album_name text not null,
 	album_release_year numeric(4)
 );
 
 --3.1.4. создадим табл муз.треков в альбоме music_tracks 
 create table if not exists sqlpy49_task3_1.music_tracks(
 	track_id serial primary key,
-	track_name text not null unique,
+	track_name text not null,
 	track_duration numeric(4)
 );
 
 --3.1.5. создадим табл вышедших муз.сборников music_collections 
 create table if not exists sqlpy49_task3_1.music_collections(
 	collection_id serial primary key,
-	collection_name text not null unique,
+	collection_name text not null,
 	collection_release_year numeric(4)
 );
 
